@@ -15,10 +15,9 @@ html, body {
     height: 100%; /* Ensure it covers the full height */
 }
 
-
 .text-overlay {
     position: absolute;
-    top: 50%;
+    top: 20%; /* Adjust position as needed */
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 70px; /* Adjust size as needed */
@@ -30,7 +29,7 @@ html, body {
 
 .input-container {
     position: absolute;
-    top: 60%; /* Adjust position as needed */
+    top: 40%; /* Adjust position as needed */
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
