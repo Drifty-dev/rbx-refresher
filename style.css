@@ -1,14 +1,18 @@
-html, body{
-  margin: 0px;
-  padding: 0px;
-  background: #000000;
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    height: 100vh; /* Fill the viewport height */
 }
-.background{
-  position: absolute;
-  display: block;
-  top: 0px;
-  left: 0px;
-  z-index: 0;
+
+.background {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%; /* Ensure it covers the full width */
+    height: 100%; /* Ensure it covers the full height */
 }
 
 .text-overlay {
@@ -17,8 +21,43 @@ html, body{
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 70px; /* Adjust size as needed */
-    color: white;    /* Change color if needed */
+    color: white; /* Change color if needed */
     text-align: center;
-    z-index: 2;      /* Make sure text is above canvas */
+    z-index: 2; /* Make sure text is above canvas */
     font-family: Arial, sans-serif; /* Choose a desired font */
-    
+}
+
+.input-container {
+    position: absolute;
+    top: 60%; /* Adjust position as needed */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    color: white; /* Color for label */
+    text-align: center;
+}
+
+.input-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 20px; /* Adjust size as needed */
+}
+
+#cookieInput {
+    width: 300px; /* Input width */
+    padding: 10px; /* Padding for input */
+    border: 1px solid #ffffff; /* Border color */
+    border-radius: 5px; /* Input border radius */
+    background: rgba(255, 255, 255, 0.1); /* Light background */
+    color: white; /* Text color */
+    font-size: 18px; /* Font size */
+    transition: border-color 0.3s; /* Transition for hover effect */
+}
+
+#cookieInput::placeholder {
+    color: rgba(255, 255, 255, 0.5); /* Placeholder color */
+}
+
+#cookieInput:hover {
+    border-color: #00ff00; /* Change border color on hover */
+}
