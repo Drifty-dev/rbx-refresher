@@ -1,4 +1,5 @@
 window.onload = function() {
+    // Inicializa las partículas de fondo
     Particles.init({
         selector: '.background',
         maxParticles: 100,
@@ -9,35 +10,43 @@ window.onload = function() {
         color: '#ffffff'
     });
 
-    // Detect mouse movement
-    document.addEventListener('mousemove', function(event) {
-        const particles = document.querySelectorAll('.background .particle');
-        particles.forEach(particle => {
-            // Get current particle position
-            const rect = particle.getBoundingClientRect();
-            const particleX = rect.left + rect.width / 2;
-            const particleY = rect.top + rect.height / 2;
+    // Selecciona los enlaces de navegación y el enlace de contacto
+    const navLinks = document.querySelectorAll('.nav-list > li > a');
+    const contactLink = document.getElementById('contactLink');
+    const copyMessage = document.getElementById('copyMessage');
 
-            // Calculate the opposite direction from the mouse
-            const deltaX = particleX - event.clientX;
-            const deltaY = particleY - event.clientY;
+    // Agrega un evento de clic a cada enlace de navegación
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Elimina la clase 'active' de todos los enlaces
+            navLinks.forEach(item => item.classList.remove('active'));
+            // Agrega la clase 'active' al enlace clicado
+            this.classList.add('active');
+            
+            // Si el enlace clicado es el de contacto
+            if (this === contactLink) {
+                // Crea un elemento de texto temporal
+                const tempInput = document.createElement('input');
+                tempInput.value = 'rbx-tools@gmail.com';
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy'); // Copia el texto al portapapeles
+                document.body.removeChild(tempInput); // Elimina el elemento temporal
 
-            // Calculate the distance from the mouse to the particle
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-            // Only move the particle if it's close to the mouse
-            if (distance < 100) { // Change this value for sensitivity
-                // Normalize the direction vector to ensure uniform movement
-                const normX = deltaX / distance;
-                const normY = deltaY / distance;
-
-                // Move the particle away from the mouse smoothly
-                const moveDistance = (100 - distance) / 10; // Adjust to modify speed
-                particle.style.transform = `translate(${(normX * moveDistance)}px, ${(normY * moveDistance)}px)`;
-            } else {
-                // Reset particle position back to original if far enough
-                particle.style.transform = 'translate(0px, 0px)';
+                // Muestra el mensaje "Copied!"
+                copyMessage.style.display = 'block';
+                setTimeout(() => {
+                    copyMessage.style.opacity = '1'; // Aparece el mensaje
+                }, 10); // Permite que la propiedad display: block surta efecto
+                
+                setTimeout(() => {
+                    copyMessage.style.opacity = '0'; // Desaparece el mensaje
+                }, 2000); // Muestra durante 2 segundos
+                
+                setTimeout(() => {
+                    copyMessage.style.display = 'none'; // Oculta después de la animación
+                }, 2500); // Oculta después de que la animación se complete
             }
         });
     });
-}
+};
