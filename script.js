@@ -13,9 +13,25 @@ window.onload = function() {
     document.addEventListener('mousemove', function(event) {
         const particles = document.querySelectorAll('.background .particle');
         particles.forEach(particle => {
-            const x = event.clientX + (Math.random() - 0.5) * 50; // Desplazamiento aleatorio
-            const y = event.clientY + (Math.random() - 0.5) * 50; // Desplazamiento aleatorio
-            particle.style.transform = `translate(${x}px, ${y}px)`;
+            // Obtener la posición actual de la partícula
+            const rect = particle.getBoundingClientRect();
+            const particleX = rect.left + rect.width / 2;
+            const particleY = rect.top + rect.height / 2;
+
+            // Calcular la dirección opuesta al mouse
+            const deltaX = particleX - event.clientX;
+            const deltaY = particleY - event.clientY;
+
+            // Calcular la distancia
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            // Normalizar la dirección
+            const normX = deltaX / distance;
+            const normY = deltaY / distance;
+
+            // Mover la partícula en la dirección opuesta al mouse
+            const moveDistance = 2; // Ajusta la velocidad de alejamiento
+            particle.style.transform = `translate(${(normX * moveDistance)}px, ${(normY * moveDistance)}px)`;
         });
     });
 }
