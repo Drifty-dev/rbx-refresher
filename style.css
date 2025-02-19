@@ -65,33 +65,21 @@ html, body {
     border-color: #00ff00; /* Cambia el color del borde al pasar el mouse */
 }
 
-.navigation {
-    position: fixed; 
-    top: 5px; 
-    right: 10px;
+/* External Navigation */
+.navigation{
+    position: fixed; top: 5px; right: 10px;
 }
-
-.nav-list {
+.nav-list{
     list-style-type: none;
 }
-
-.nav-list > li {
+.nav-list > li{
     display: inline-block;
 }
-
-.nav-list > li > a {
-    display: block; 
-    text-decoration: none; 
-    padding: 8px 15px; 
-    border-radius: 10px; 
-    transition: 0.5s; 
-    opacity: 0.5;
+.nav-list > li > a{
+    display: block; text-decoration: none; padding: 8px 15px; border-radius: 10px; transition: 0.5s; opacity: 0.5;
 }
-
-.nav-list > li > a:hover {
-    background-color: blue; 
-    color: white; 
-    opacity: 1.0;
+.nav-list > li > a:hover{
+    background-color: blue; color: white; opacity: 1.0;
 }
 
 /* Animation keyframes */
