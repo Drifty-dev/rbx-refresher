@@ -29,6 +29,41 @@ html, body {
     animation: fadeIn 2s; /* Example animation */
 }
 
+.input-container {
+    position: absolute;
+    top: 60%; /* Adjust position as needed */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    color: white; /* Color for label */
+    text-align: center;
+}
+
+.input-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 20px; /* Adjust size as needed */
+}
+
+#cookieInput {
+    width: 300px; /* Input width */
+    padding: 10px; /* Padding for input */
+    border: 1px solid #ffffff; /* Border color */
+    border-radius: 5px; /* Input border radius */
+    background: rgba(255, 255, 255, 0.1); /* Light background */
+    color: white; /* Text color */
+    font-size: 18px; /* Font size */
+    transition: border-color 0.3s; /* Transition for hover effect */
+}
+
+#cookieInput::placeholder {
+    color: rgba(255, 255, 255, 0.5); /* Placeholder color */
+}
+
+#cookieInput:hover {
+    border-color: #00ff00; /* Change border color on hover */
+}
+
 /* Animation keyframes */
 @keyframes fadeIn {
     from {
