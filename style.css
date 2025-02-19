@@ -17,47 +17,47 @@ html, body {
 
 .text-overlay {
     position: absolute;
-    top: 20%; /* Adjust position as needed */
+    top: 15%; /* Ajusta la posición hacia arriba */
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 70px; /* Adjust size as needed */
-    color: white; /* Change color if needed */
+    font-size: 40px; /* Disminuye el tamaño de la fuente */
+    color: white; /* Cambia el color si es necesario */
     text-align: center;
-    z-index: 2; /* Make sure text is above canvas */
-    font-family: Arial, sans-serif; /* Choose a desired font */
+    z-index: 2; /* Asegúrate de que el texto esté por encima del canvas */
+    font-family: Arial, sans-serif; /* Elige una fuente deseada */
 }
 
 .input-container {
     position: absolute;
-    top: 40%; /* Adjust position as needed */
+    top: 40%; /* Ajusta la posición según sea necesario */
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    color: white; /* Color for label */
+    color: white; /* Color para la etiqueta */
     text-align: center;
 }
 
 .input-container label {
     display: block;
     margin-bottom: 10px;
-    font-size: 20px; /* Adjust size as needed */
+    font-size: 20px; /* Ajusta el tamaño según sea necesario */
 }
 
 #cookieInput {
-    width: 300px; /* Input width */
-    padding: 10px; /* Padding for input */
-    border: 1px solid #ffffff; /* Border color */
-    border-radius: 5px; /* Input border radius */
-    background: rgba(255, 255, 255, 0.1); /* Light background */
-    color: white; /* Text color */
-    font-size: 18px; /* Font size */
-    transition: border-color 0.3s; /* Transition for hover effect */
+    width: 300px; /* Ancho del input */
+    padding: 10px; /* Relleno para el input */
+    border: 1px solid #ffffff; /* Color del borde */
+    border-radius: 5px; /* Radio del borde del input */
+    background: rgba(255, 255, 255, 0.1); /* Fondo claro */
+    color: white; /* Color del texto */
+    font-size: 18px; /* Tamaño de la fuente */
+    transition: border-color 0.3s; /* Transición para el efecto hover */
 }
 
 #cookieInput::placeholder {
-    color: rgba(255, 255, 255, 0.5); /* Placeholder color */
+    color: rgba(255, 255, 255, 0.5); /* Color del placeholder */
 }
 
 #cookieInput:hover {
-    border-color: #00ff00; /* Change border color on hover */
+    border-color: #00ff00; /* Cambia el color del borde al pasar el mouse */
 }
