@@ -1,7 +1,7 @@
 window.onload = function() {
     Particles.init({
         selector: '.background',
-        maxParticles: 30,
+        maxParticles: 100,
         connectParticles: true,
         speed: 2,
         minDistance: 100,
@@ -31,8 +31,8 @@ window.onload = function() {
                 const normX = deltaX / distance;
                 const normY = deltaY / distance;
 
-                // Move the particle away from the mouse
-                const moveDistance = (100 - distance) / 5; // Adjust adjust movement based on distance
+                // Move the particle away from the mouse smoothly
+                const moveDistance = (100 - distance) / 10; // Adjust to modify speed
                 particle.style.transform = `translate(${(normX * moveDistance)}px, ${(normY * moveDistance)}px)`;
             } else {
                 // Reset particle position back to original if far enough
