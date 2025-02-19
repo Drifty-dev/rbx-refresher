@@ -28,40 +28,28 @@ html, body {
     font-family: Arial, sans-serif; /* Asegúrate de que la fuente sea la misma */
 }
 
-
-.input-container {
-    position: absolute;
-    top: 40%; /* Ajusta la posición según sea necesario */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    color: white; /* Color para la etiqueta */
-    text-align: center;
+.text-overlay span {
+    display: inline-block; /* Asegúrate de que cada letra esté en línea */
+    font-size: 20px; /* Tamaño de la fuente */
+    color: #1d1d1d; /* Color inicial */
+    animation: neonTxt 5s ease-in-out infinite alternate; /* Aplicar animación */
 }
 
-/* Asegúrate de que .input-container label mantenga el mismo estilo */
-.input-container label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 20px; /* Mantenlo igual para consistencia */
-    color: white; /* Color para el label */
-}
-
-#cookieInput {
-    width: 300px; /* Ancho del input */
-    padding: 10px; /* Relleno para el input */
-    border: 1px solid #ffffff; /* Color del borde */
-    border-radius: 5px; /* Radio del borde del input */
-    background: rgba(255, 255, 255, 0.1); /* Fondo claro */
-    color: white; /* Color del texto */
-    font-size: 18px; /* Tamaño de la fuente */
-    transition: border-color 0.3s; /* Transición para el efecto hover */
-}
-
-#cookieInput::placeholder {
-    color: rgba(255, 255, 255, 0.5); /* Color del placeholder */
-}
-
-#cookieInput:hover {
-    border-color: #00ff00; /* Cambia el color del borde al pasar el mouse */
-}
+.text-overlay span:nth-child(1) { animation-delay: 0s; }
+.text-overlay span:nth-child(2) { animation-delay: 0.1s; }
+.text-overlay span:nth-child(3) { animation-delay: 0.2s; }
+.text-overlay span:nth-child(4) { animation-delay: 0.3s; }
+.text-overlay span:nth-child(5) { animation-delay: 0.4s; }
+.text-overlay span:nth-child(6) { animation-delay: 0.5s; }
+.text-overlay span:nth-child(7) { animation-delay: 0.6s; }
+.text-overlay span:nth-child(8) { animation-delay: 0.7s; }
+.text-overlay span:nth-child(9) { animation-delay: 0.8s; }
+.text-overlay span:nth-child(10) { animation-delay: 0.9s; }
+.text-overlay span:nth-child(11) { animation-delay: 1s; }
+.text-overlay span:nth-child(12) { animation-delay: 1.1s; }
+.text-overlay span:nth-child(13) { animation-delay: 1.2s; }
+.text-overlay span:nth-child(14) { animation-delay: 1.3s; }
+.text-overlay span:nth-child(15) { animation-delay: 1.4s; }
+.text-overlay span:nth-child(16) { animation-delay: 1.5s; }
+.text-overlay span:nth-child(17) { animation-delay: 1.6s; }
+.text-overlay span:nth-child(18) { animation-delay: 1.7s;
