@@ -10,3 +10,15 @@ html, body{
   left: 0px;
   z-index: 0;
 }
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 70px; /* Adjust size as needed */
+    color: white;    /* Change color if needed */
+    text-align: center;
+    z-index: 2;      /* Make sure text is above canvas */
+    font-family: Arial, sans-serif; /* Choose a desired font */
+    
