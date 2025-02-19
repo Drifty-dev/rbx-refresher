@@ -11,13 +11,12 @@ html, body {
     font-family: "Poppins", sans-serif; 
 }
 
-/* Copied Message */
 .copy-message {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #04AA6D;
+    background-color: #04AA6D; /* Color verde */
     color: white;
     padding: 15px;
     border-radius: 5px;
