@@ -15,41 +15,26 @@ html, body {
     height: 100%; /* Ensure it covers the full height */
 }
 
-/* Cambios en .text-overlay */
+/* Changes in .text-overlay */
 .text-overlay {
     position: absolute;
-    top: 15%; /* Ajusta la posición hacia arriba */
+    top: 15%; /* Adjust position upwards */
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 20px; /* Cambia el tamaño de la fuente al mismo del label */
-    color: white; /* Cambia esto al color del label si es diferente */
+    font-size: 20px; /* Font size */
+    color: white; /* Text color */
     text-align: center;
-    z-index: 2; /* Asegúrate de que el texto esté por encima del canvas */
-    font-family: Arial, sans-serif; /* Asegúrate de que la fuente sea la misma */
+    z-index: 2; /* Ensure it's above the canvas */
+    font-family: Arial, sans-serif; /* Font family */
+    animation: fadeIn 2s; /* Example animation */
 }
 
-.text-overlay span {
-    display: inline-block; /* Asegúrate de que cada letra esté en línea */
-    font-size: 20px; /* Tamaño de la fuente */
-    color: #1d1d1d; /* Color inicial */
-    animation: neonTxt 5s ease-in-out infinite alternate; /* Aplicar animación */
+/* Animation keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
-
-.text-overlay span:nth-child(1) { animation-delay: 0s; }
-.text-overlay span:nth-child(2) { animation-delay: 0.1s; }
-.text-overlay span:nth-child(3) { animation-delay: 0.2s; }
-.text-overlay span:nth-child(4) { animation-delay: 0.3s; }
-.text-overlay span:nth-child(5) { animation-delay: 0.4s; }
-.text-overlay span:nth-child(6) { animation-delay: 0.5s; }
-.text-overlay span:nth-child(7) { animation-delay: 0.6s; }
-.text-overlay span:nth-child(8) { animation-delay: 0.7s; }
-.text-overlay span:nth-child(9) { animation-delay: 0.8s; }
-.text-overlay span:nth-child(10) { animation-delay: 0.9s; }
-.text-overlay span:nth-child(11) { animation-delay: 1s; }
-.text-overlay span:nth-child(12) { animation-delay: 1.1s; }
-.text-overlay span:nth-child(13) { animation-delay: 1.2s; }
-.text-overlay span:nth-child(14) { animation-delay: 1.3s; }
-.text-overlay span:nth-child(15) { animation-delay: 1.4s; }
-.text-overlay span:nth-child(16) { animation-delay: 1.5s; }
-.text-overlay span:nth-child(17) { animation-delay: 1.6s; }
-.text-overlay span:nth-child(18) { animation-delay: 1.7s; }
