@@ -15,17 +15,19 @@ html, body {
     height: 100%; /* Ensure it covers the full height */
 }
 
+/* Cambios en .text-overlay */
 .text-overlay {
     position: absolute;
     top: 15%; /* Ajusta la posición hacia arriba */
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 40px; /* Disminuye el tamaño de la fuente */
-    color: white; /* Cambia el color si es necesario */
+    font-size: 20px; /* Cambia el tamaño de la fuente al mismo del label */
+    color: white; /* Cambia esto al color del label si es diferente */
     text-align: center;
     z-index: 2; /* Asegúrate de que el texto esté por encima del canvas */
-    font-family: Arial, sans-serif; /* Elige una fuente deseada */
+    font-family: Arial, sans-serif; /* Asegúrate de que la fuente sea la misma */
 }
+
 
 .input-container {
     position: absolute;
@@ -37,10 +39,12 @@ html, body {
     text-align: center;
 }
 
+/* Asegúrate de que .input-container label mantenga el mismo estilo */
 .input-container label {
     display: block;
     margin-bottom: 10px;
-    font-size: 20px; /* Ajusta el tamaño según sea necesario */
+    font-size: 20px; /* Mantenlo igual para consistencia */
+    color: white; /* Color para el label */
 }
 
 #cookieInput {
