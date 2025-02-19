@@ -9,7 +9,7 @@
 <body>
     <div class="navigation">
         <ul class="nav-list">
-            <li><a href="#">Contact</a></li>
+            <li><a href="#" id="contactLink">Contact</a></li>
             <li><a href="#">Discord</a></li>
         </ul>
     </div>
@@ -21,11 +21,20 @@
     </div>
     <canvas class="background"></canvas>
 
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h1>COPIED</h1>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
 
     <script>
         const navLinks = document.querySelectorAll('.nav-list > li > a');
+        const modal = document.getElementById('modal');
+        const contactLink = document.getElementById('contactLink');
 
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
@@ -33,6 +42,14 @@
                 navLinks.forEach(item => item.classList.remove('active'));
                 // Agregar la clase 'active' al enlace clicado
                 this.classList.add('active');
+                
+                // Mostrar el modal si se clicó en Contact
+                if (this === contactLink) {
+                    modal.style.display = 'flex';
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 2000); // Ocultar después de 2 segundos
+                }
             });
         });
     </script>
