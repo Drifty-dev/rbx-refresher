@@ -28,11 +28,14 @@
         const navLinks = document.querySelectorAll('.nav-list > li > a');
 
         navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                // Remover la clase 'active' de todos los enlaces
-                navLinks.forEach(item => item.classList.remove('active'));
-                // Agregar la clase 'active' al enlace clicado
+            link.addEventListener('mouseover', function() {
+                // Agregar la clase 'active' al enlace que está siendo pasado por encima
                 this.classList.add('active');
+            });
+
+            link.addEventListener('mouseout', function() {
+                // Remover la clase 'active' al salir del enlace
+                this.classList.remove('active');
             });
         });
     </script>
