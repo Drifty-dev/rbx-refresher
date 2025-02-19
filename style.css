@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+/* Global Styles */
 * {
     box-sizing: border-box;
 }
@@ -8,78 +9,80 @@ html, body {
     margin: 0;
     padding: 0;
     background: #000000;
-    height: 100vh; /* Fill the viewport height */
+    height: 100vh;
 }
 
+/* Background */
 .background {
     position: absolute;
-    display: block;
     top: 0;
     left: 0;
     z-index: 0;
-    width: 100%; /* Ensure it covers the full width */
-    height: 100%; /* Ensure it covers the full height */
+    width: 100%;
+    height: 100%;
 }
 
-/* Changes in .text-overlay */
+/* Text Overlay */
 .text-overlay {
     position: absolute;
-    top: 15%; /* Adjust position upwards */
+    top: 15%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 20px; /* Font size */
-    color: white; /* Text color */
+    font-size: 20px;
+    color: white;
     text-align: center;
-    z-index: 2; /* Ensure it's above the canvas */
-    font-family: Arial, sans-serif; /* Font family */
-    animation: fadeIn 2s; /* Example animation */
+    z-index: 2;
+    font-family: 'Poppins', Arial, sans-serif;
+    animation: fadeIn 2s;
 }
 
+/* Input Container */
 .input-container {
     position: absolute;
-    top: 40%; /* Ajusta la posición según sea necesario */
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    color: white; /* Color para la etiqueta */
+    color: white;
     text-align: center;
 }
 
 .input-container label {
     display: block;
     margin-bottom: 10px;
-    font-size: 20px; /* Ajusta el tamaño según sea necesario */
+    font-size: 20px;
 }
 
 #cookieInput {
-    width: 300px; /* Ancho del input */
-    padding: 10px; /* Relleno para el input */
-    border: 1px solid #ffffff; /* Color del borde */
-    border-radius: 5px; /* Radio del borde del input */
-    background: rgba(255, 255, 255, 0.1); /* Fondo claro */
-    color: white; /* Color del texto */
-    font-size: 18px; /* Tamaño de la fuente */
-    transition: border-color 0.3s; /* Transición para el efecto hover */
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 18px;
+    transition: border-color 0.3s;
 }
 
 #cookieInput::placeholder {
-    color: rgba(255, 255, 255, 0.5); /* Color del placeholder */
+    color: rgba(255, 255, 255, 0.5);
 }
 
 #cookieInput:hover {
-    border-color: #00ff00; /* Cambia el color del borde al pasar el mouse */
+    border-color: #00ff00;
 }
 
+/* Container Styles */
 .container {
-    padding: 10px 20px; 
-    margin: 15px; 
-    border-radius: 10px; 
+    padding: 10px 20px;
+    margin: 15px;
+    border-radius: 10px;
     box-shadow: 0 0 5px gray;
     min-width: 350px;
 }
 
 #hey {
-    font-size: 22px; 
+    font-size: 22px;
     font-weight: 400;
 }
 
@@ -87,10 +90,10 @@ html, body {
     font-weight: 500;
 }
 
-/* External Navigation */
+/* Navigation */
 .navigation {
-    position: fixed; 
-    top: 5px; 
+    position: fixed;
+    top: 5px;
     right: 10px;
 }
 
@@ -103,38 +106,32 @@ html, body {
 }
 
 .nav-list > li > a {
-    display: block; 
-    text-decoration: none; 
-    padding: 8px 15px; 
-    border-radius: 10px; 
-    transition: 0.5s; 
+    display: block;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    transition: 0.5s;
     opacity: 0.5;
-    position: relative; /* Para el efecto del cuadro azul */
+    position: relative;
 }
 
 .nav-list > li > a:hover {
-    background-color: blue; 
-    color: white; 
+    background-color: blue;
+    color: white;
     opacity: 1.0;
 }
 
-/* Active state for the clicked link */
 .nav-list > li > a.active {
-    border: 2px solid blue; /* Cuadro azul alrededor del enlace activo */
-    box-shadow: 0 0 10px blue; /* Sombra azul para el efecto */
+    border: 2px solid blue;
+    box-shadow: 0 0 10px blue;
 }
 
-/* Remove default focus outline */
 .nav-list > li > a:focus {
     outline: none;
 }
 
-/* Animation keyframes */
+/* Animations */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
