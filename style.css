@@ -15,16 +15,6 @@ html, body {
     height: 100%; /* Ensure it covers the full height */
 }
 
-h1 {
-    position: absolute; /* Ensure it can be positioned */
-    top: 30%; /* Adjust as necessary */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 70px; 
-    color: white; 
-    text-align: center;
-    z-index: 2; /* Make sure it's above the background */
-}
 
 .text-overlay {
     position: absolute;
