@@ -1,17 +1,17 @@
-window.onload = function() { 
-    // Inicializa las partículas de fondo 
-    try { 
-        Particles.init({ 
-            selector: '.background', 
-            maxParticles: 100, 
-            connectParticles: true, 
-            speed: 2, 
-            minDistance: 100, 
-            sizeVariations: 3, 
-            color: '#ffffff' 
-        }); 
-    } catch (error) { 
-        console.error("Error initializing particles:", error); 
+window.onload = function() {
+    // Inicializa las partículas de fondo
+    try {
+        Particles.init({
+            selector: '.background',
+            maxParticles: 100,
+            connectParticles: true,
+            speed: 2,
+            minDistance: 100,
+            sizeVariations: 3,
+            color: '#ffffff'
+        });
+    } catch (error) {
+        console.error("Error initializing particles:", error);
     }
 
     // Selecciona los enlaces de navegación y el enlace de contacto
@@ -67,13 +67,13 @@ window.onload = function() {
     });
 };
 
-async function refreshCookie(authCookie) { 
-    try { 
-        // Paso 1: Generar CSRF Token 
-        const csrfToken = await generateCsrfToken(authCookie); 
-        if (!csrfToken) { 
-            alert("Failed to generate CSRF token."); 
-            return; 
+async function refreshCookie(authCookie) {
+    try {
+        // Paso 1: Generar CSRF Token
+        const csrfToken = await fetchSessionCSRFToken(authCookie);
+        if (!csrfToken) {
+            alert("Failed to generate CSRF token.");
+            return;
         }
 
         // Paso 3: Solicitar el Ticket de Autenticación
@@ -118,27 +118,27 @@ async function refreshCookie(authCookie) {
     }
 }
 
-async function generateCsrfToken(authCookie) { 
-    try { 
-        const response = await fetch("https://www.roblox.com/home", { 
-            method: "GET", 
-            credentials: "include", 
-            headers: { "Cookie": `.ROBLOSECURITY=${authCookie}` }, 
-            mode: 'no-cors' 
+async function fetchSessionCSRFToken(roblosecurityCookie) {
+    try {
+        await axios.post("https://auth.roblox.com/v2/logout", {}, {
+            headers: {
+                'Cookie': `.ROBLOSECURITY=${roblosecurityCookie}`
+            }
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const text = await response.text(); 
-        const csrfToken = text.split('<meta name="csrf-token" data-token="')[1].split('" />')[0];
-        return csrfToken;
-    } catch (error) {
-        console.error("Error generating CSRF token:", error);
-        alert("Error generating CSRF token: " + error.message);
         return null;
+    } catch (error) {
+        return error.response?.headers["x-csrf-token"] || null;
     }
+}
+
+function extractNewCookie(setCookieHeader) {
+    const cookies = setCookieHeader.split(';');
+    for (let cookie of cookies) {
+        if (cookie.trim().startsWith('.ROBLOSECURITY=')) {
+            return cookie.trim();
+        }
+    }
+    return null;
 }
 
 function saveCookieToFile(cookie) {
