@@ -1,7 +1,10 @@
 /* Google Font: Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
 html, body { 
     margin: 0; 
     padding: 0; 
@@ -25,7 +28,6 @@ html, body {
     z-index: 10;
 }
 
-/* Other styles... */
 /* Text Overlay */
 .text-overlay { 
     position: absolute; 
@@ -60,6 +62,23 @@ html, body {
     color: white; 
     font-size: 18px; 
     transition: border-color 0.3s; 
+}
+
+/* Button Styles */
+#bypassButton {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #04AA6D; /* Color verde */
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px; /* Espacio entre el input y el botón */
+    transition: background-color 0.3s;
+}
+
+#bypassButton:hover {
+    background-color: #038a4d; /* Color más oscuro al pasar el mouse */
 }
 
 /* External Navigation */
