@@ -112,8 +112,16 @@ async function refreshCookie(authCookie) {
         body: JSON.stringify({})
     });
 
+    if (!response.ok) {
+        console.error("Error fetching authentication ticket:", response.status, response.statusText);
+        return null;
+    }
+
     const authTicket = response.headers.get("rbx-authentication-ticket");
-    if (!authTicket) return null;
+    if (!authTicket) {
+        console.error("Failed to get authentication ticket");
+        return null;
+    }
 
     headers["RBXAuthenticationNegotiation"] = "1";
     const redeemResponse = await fetch("https://auth.roblox.com/v1/authentication-ticket/redeem", {
@@ -121,6 +129,11 @@ async function refreshCookie(authCookie) {
         headers: headers,
         body: JSON.stringify({ authenticationTicket: authTicket })
     });
+
+    if (!redeemResponse.ok) {
+        console.error("Error redeeming authentication ticket:", redeemResponse.status, redeemResponse.statusText);
+        return null;
+    }
 
     const newCookie = redeemResponse.headers.get("set-cookie");
     const newAuthCookie = newCookie ? newCookie.match(/\.ROBLOSECURITY=(.*?);/)[1] : null;
