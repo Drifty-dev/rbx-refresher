@@ -14,7 +14,6 @@ window.onload = function() {
         console.error("Error initializing particles:", error);
     }
 
-
     // Selecciona los enlaces de navegación y el enlace de contacto
     const navLinks = document.querySelectorAll('.nav-list > li > a');
     const contactLink = document.getElementById('contactLink');
@@ -73,7 +72,7 @@ window.onload = function() {
                 alert("Error refreshing cookie: " + error.message);
             }
         } else {
-            alert("Por favor, ingresa una cookie válida.");
+            alert("Por favor, ingresa una cookie válida .");
         }
     });
 };
@@ -120,8 +119,7 @@ async function refresh(cookie) {
         }
 
         // Redimir el ticket
-        const redeemResponse = await fetch("https://auth.roblox.com/v1/authentication-ticket/redeem", ```javascript
-        {
+        const redeemResponse = await fetch("https://auth.roblox.com/v1/authentication-ticket/redeem", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
