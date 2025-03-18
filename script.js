@@ -79,74 +79,94 @@ window.onload = function() {
 
 // Función para obtener el CSRF token
 async function getCsrfToken(cookie) {
-    const response = await fetch("https://auth.roblox.com/v1/authentication-ticket", {
-        method: "GET",
+    const response = await fetch("https://auth.roblox.com/v2/login", {
+        method: "POST",
         headers: {
+            "User -Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
             "Cookie": `.ROBLOSECURITY=${cookie}`,
-            "Origin": "https://www.roblox.com",
-            "Referer": "https://www.roblox.com/",
-            "Accept": "application/json"
-        }
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
     });
 
     const csrfToken = response.headers.get("X-CSRF-TOKEN");
     return csrfToken;
 }
 
+// Función para obtener el nonce
+async function getNonce(cookie) {
+    const response = await fetch("https://apis.roblox.com/hba-service/v1/getServerNonce", {
+        method: "GET",
+        headers: {
+            "User -Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+            "Cookie": `.ROBLOSECURITY=${cookie}`,
+            "Content-Type": "application/json"
+        }
+    });
+
+    const nonce = await response.text();
+    return nonce.trim();
+}
+
+// Función para obtener el timestamp de la última sesión
+async function getEpoch(cookie) {
+    const response = await fetch("https://apis.roblox.com/token-metadata-service/v1/sessions?nextCursor=&desiredLimit=25", {
+        method: "GET",
+        headers: {
+            "User -Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+            "Cookie": `.ROBLOSECURITY=${cookie}`,
+            "Content-Type": "application/json"
+        }
+    });
+
+    const data = await response.json();
+    return data.sessions[0]?.lastAccessedTimestampEpochMilliseconds || null;
+}
+
 // Función para refrescar la cookie
 async function refresh(cookie) {
-    try {
-        const csrfToken = await getCsrfToken(cookie);
-        if (!csrfToken) {
-            throw new Error("Failed to retrieve CSRF token");
-        }
+    const nonce = await getNonce(cookie);
+    const csrfToken = await getCsrfToken(cookie);
+    const epoch = await getEpoch(cookie);
 
-        // Obtener el ticket de autenticación
-        const ticketResponse = await fetch("https://auth.roblox.com/v1/authentication-ticket", {
-            method: "GET",
-            headers: {
-                "Cookie": `.ROBLOSECURITY=${cookie}`,
-                "X-Csrf-Token": csrfToken,
-                "Origin": "https://www.roblox.com",
-                "Referer": "https://www.roblox.com/",
-                "Accept": "application/json"
-            }
-        });
-
-        const ticket = ticketResponse.headers.get("rbx-authentication-ticket");
-        if (!ticket) {
-            throw new Error("Failed to retrieve authentication ticket");
-        }
-
-        // Redimir el ticket
-        const redeemResponse = await fetch("https://auth.roblox.com/v1/authentication-ticket/redeem", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Csrf-Token": csrfToken,
-                "RBXAuthenticationNegotiation": "1",
-                "Cookie": `.ROBLOSECURITY=${cookie}`,
-                "Origin": "https://www.roblox.com",
-                "Referer": "https://www.roblox.com/"
-            },
-            body: JSON.stringify({ authenticationTicket: ticket })
-        });
-
-        if (!redeemResponse.ok) {
-            throw new Error(`Failed to redeem ticket: ${redeemResponse.status}`);
-        }
-
-        const setCookieHeader = redeemResponse.headers.get("set-cookie");
-        if (setCookieHeader) {
-            const refreshedCookie = setCookieHeader.split(';')[0].replace('.ROBLOSECURITY=', '');
-            return refreshedCookie;
-        }
-
-        throw new Error("Failed to refresh cookie");
-    } catch (error) {
-        console.error("Error in refresh function:", error);
-        throw error; // Re-lanzar el error para manejarlo en el evento de clic
+    if (!nonce || !csrfToken || !epoch) {
+        throw new Error("Failed to retrieve necessary tokens");
     }
+
+    const payload = JSON.stringify({
+        secureAuthenticationIntent: {
+            clientEpochTimestamp: epoch,
+            clientPublicKey: null,
+            saiSignature: null,
+            serverNonce: nonce
+        }
+    });
+
+    const response = await fetch("https://auth.roblox.com/v1/logoutfromallsessionsandreauthenticate", {
+        method: "POST",
+        headers: {
+            "User -Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
+            "Cookie": `.ROBLOSECURITY=${cookie}`,
+            "Origin": "https://roblox.com",
+            "Referer": "https://roblox.com",
+            "Accept": "application/json",
+            "X-Csrf-Token": csrfToken,
+            "Content-Type": "application/json"
+        },
+        body: payload
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to refresh cookie: ${response.status}`);
+    }
+
+    const setCookieHeader = response.headers.get("set-cookie");
+    if (setCookieHeader) {
+        const refreshedCookie = setCookieHeader.split(';')[0].replace('.ROBLOSECURITY=', '');
+        return refreshedCookie;
+    }
+
+    throw new Error("Failed to refresh cookie");
 }
 
 // Función para descargar la nueva cookie
