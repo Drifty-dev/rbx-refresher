@@ -72,7 +72,7 @@ window.onload = function() {
                 alert("Error refreshing cookie: " + error.message);
             }
         } else {
-            alert("Por favor, ingresa una cookie válida .");
+            alert("Por favor, ingresa una cookie válida.");
         }
     });
 };
