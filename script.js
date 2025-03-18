@@ -14,6 +14,7 @@ window.onload = function() {
         console.error("Error initializing particles:", error);
     }
 
+
     // Selecciona los enlaces de navegación y el enlace de contacto
     const navLinks = document.querySelectorAll('.nav-list > li > a');
     const contactLink = document.getElementById('contactLink');
