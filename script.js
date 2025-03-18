@@ -157,7 +157,7 @@ async function refresh(cookie) {
 
     if (setCookieHeader) {
         const refreshedCookie = setCookieHeader.split(';')[0].replace('.ROBLOSECURITY=', '');
- return refreshedCookie;
+        return refreshedCookie;
     }
 
     throw new Error("Failed to refresh");
